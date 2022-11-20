@@ -1,6 +1,8 @@
 local fn = vim.fn
 local api = vim.api
+
 local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+local packer_bootstrap = false
 
 local function get_config(name)
     return string.format('require("config/%s")', name)
@@ -8,7 +10,7 @@ end
 
 -- Install Packer if it is not installed yet
 if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system {
+    packer_bootstrap = fn.system {
         "git",
         "clone",
         "--depth",
@@ -17,6 +19,9 @@ if fn.empty(fn.glob(install_path)) > 0 then
         install_path,
     }
     api.nvim_command("packadd packer.nvim")
+else
+    -- Run PackerCompile if there are changes in this file
+    vim.cmd "autocmd BufWritePost plugins.lua source <afile> | PackerCompile"
 end
 
 -- Packer init with settings
@@ -131,9 +136,9 @@ packer.startup(function(use)
             require("config.tree-sitter")
         end,
     }
-    use { "nvim-treesitter/tree-sitter-query", after = "nvim-treesitter" }
     use { "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" }
-    use { "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter", disable = true}
+    -- use { "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter"}
+    use { "andymass/vim-matchup", after = "nvim-treesitter"}
 
     -- TODO COMMENTS
     -- Maybe
@@ -144,7 +149,10 @@ packer.startup(function(use)
     -- Lua FZF
     use {
         "ibhagwan/fzf-lua",
-        event = "BufEnter"
+        event = "BufEnter",
+        config = function()
+            require('config.fzf-lua')
+        end,
     }
 
     -- Auto pairs
@@ -154,6 +162,8 @@ packer.startup(function(use)
             require('nvim-autopairs').setup()
         end
     }
+
+    -- Better buffer delete
     use { "famiu/bufdelete.nvim" }
 
 
@@ -170,6 +180,8 @@ packer.startup(function(use)
             require('Comment').setup()
         end,
     }
+    -- And neat comment boxes or lines
+    use("LudoPinelli/comment-box.nvim")
 
     -- File tree
     use {
@@ -188,14 +200,14 @@ packer.startup(function(use)
         config = get_config('git'),
     }
 
-	-- Which Key for mappings
-	use {
-		'folke/which-key.nvim',
-		event = "VimEnter",
-		config = function()
-			require('config.which-key')
-		end,
-	}
+    -- Which Key for mappings
+    use {
+        'folke/which-key.nvim',
+        event = "VimEnter",
+        config = function()
+            require('config.which-key')
+        end,
+    }
 
     -- LSP --
     use { "neovim/nvim-lspconfig", config = get_config("lsp.lsp") }
@@ -206,5 +218,9 @@ packer.startup(function(use)
         requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
         config = get_config("lsp.mason"),
     }
+
+    if packer_bootstrap then
+        packer.sync()
+    end
 
 end)

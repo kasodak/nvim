@@ -38,7 +38,7 @@ local ctrl_mappings = {
         d = { "<cmd>Gvdiffsplit master<cr>", "Verticall diff split of master" },
         u = { "<cmd>Gitsigns reset_hunk<cr>", "Reset hunk" },
         b = { "<cmd>Gitsigns blame_line<cr>", "Blame line" }
-    },
+        },{ prefix = "<C>", mode = "n" }
 }
 
 local leader_mappings = {
@@ -73,13 +73,6 @@ local leader_mappings = {
             s = { "<cmd>PackerSync<cr>", "Sync" },
             S = { "<cmd>PackerStatus<cr>", "Status" },
             u = { "<cmd>PackerUpdate<cr>", "Update" },
-        },
-
-        l = {
-            name = "LSP",
-            S = { "<cmd>LspStart<cr>", "Start" },
-            s = { "<cmd>LspStop<cr>", "Stop" },
-            i = { "<cmd>LspInfo<cr>", "Info" },
         },
 
         s = {
