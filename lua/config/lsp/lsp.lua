@@ -7,9 +7,9 @@ end
 local utils = require("config.lsp.utils")
 local opts = require("config.lsp.opts")
 
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- enable autoclompletion via nvim-cmp
--- capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 -- enable folding capabilities for nvim-ufo
 -- capabilities.textDocument.foldingRange = {
 --     dynamicRegistration = false,

@@ -219,6 +219,34 @@ packer.startup(function(use)
         config = get_config("lsp.mason"),
     }
 
+     -- Completion
+    use {
+        "hrsh7th/nvim-cmp",
+        config = function()
+            require("config.cmp")
+        end,
+        wants = { "LuaSnip" },
+        requires = {
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-nvim-lua",
+            "ray-x/cmp-treesitter",
+            "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+            {
+                "L3MON4D3/LuaSnip",
+                wants = { "friendly-snippets" },
+                config = function()
+                    require("config.snip")
+                end,
+            },
+            "rafamadriz/friendly-snippets",
+        },
+    }
+
+
     if packer_bootstrap then
         packer.sync()
     end
