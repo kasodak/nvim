@@ -80,7 +80,6 @@ packer.startup(function(use)
     -- Indent blankline (neat to have tree-sitter with it)
     use{
         'lukas-reineke/indent-blankline.nvim',
-        event = "BufReadPre",
         config = function()
             require('indent_blankline').setup({
                 space_char_blankline = " ",
@@ -140,8 +139,12 @@ packer.startup(function(use)
     -- use { "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter"}
     use { "andymass/vim-matchup", after = "nvim-treesitter"}
 
-    -- TODO COMMENTS
-    -- Maybe
+    use {
+        'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim',
+        config = function()
+            require('toggle_lsp_diagnostics').init()
+        end,
+    }
 
     -- FZF
     use { "junegunn/fzf", run = "./install --bin", event = "VimEnter" }

@@ -2,7 +2,9 @@ local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 -- Setting <leader> to <space>
-keymap({ "n", "v", "x" }, "<Space>", "<Nop>", { silent = true })
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 vim.g.mapleader = " "
 
 -- Quits and writes
@@ -29,4 +31,6 @@ keymap("n", ",<space>", ":nohlsearch<cr>", opts)
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
 
--- Which key mappings --
+-- Better page down and page up
+keymap("n", "<C-d>", "<C-d>zz", opts)
+keymap("n", "<C-u>", "<C-u>zz", opts)

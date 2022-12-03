@@ -11,16 +11,17 @@ M.lua = {
     },
     completion = { enable = true, callSnippet = "Both" },
     diagnostics = {
-        enable = true,
-        globals = { "vim", "describe" },
+        -- Get the language server to recognize the `vim` global
+        globals = { "vim", "describe", "it", "before_each", "after_each", "packer_plugins" },
     },
     workspace = {
+        -- Make the server aware of Neovim runtime files
         library = {
-            vim.api.nvim_get_runtime_file("", true),
+            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
         },
-        -- adjust these two values if your performance is not optimal
         maxPreload = 2000,
-        preloadFileSize = 1000,
+        preloadFileSize = 20000,
     },
     telemetry = { enable = false },
 }

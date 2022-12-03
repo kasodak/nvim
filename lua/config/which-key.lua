@@ -17,7 +17,7 @@ local conf = {
     }
 }
 
-local opts = {
+local default_opts = {
     mode = "n", -- Normal mode
     buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
     silent = true, -- use `silent` when creating keymaps
@@ -27,21 +27,20 @@ local opts = {
 
 whichkey.setup(conf)
 
-local default_mappings = { }
-
-local ctrl_mappings = {
+local git_mappings = {
     g = {
         name = "Git stuff",
-        n = { "<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
-        p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
         s = { "<cmd>Gitsigns preview_hunk<cr>", "Preview hunk" },
         d = { "<cmd>Gvdiffsplit master<cr>", "Verticall diff split of master" },
         u = { "<cmd>Gitsigns reset_hunk<cr>", "Reset hunk" },
-        b = { "<cmd>Gitsigns blame_line<cr>", "Blame line" }
-        },{ prefix = "<C>", mode = "n" }
+        b = { "<cmd>Gitsigns blame_line<cr>", "Blame line" },
+        n = { "<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
+        p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
+        g = { "<cmd>0G<cr>", "Previous hunk" },
+    }
 }
 
-local leader_mappings = {
+local default_mappings = {
     ["<leader>"] = {
         e = {
             name = "Edit",
@@ -63,6 +62,7 @@ local leader_mappings = {
             G = { "<cmd>FzfLua live_grep<cr>", "Live grep" },
             g = { "<cmd>FzfLua grep<cr>", "Grep" },
             e = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
+            E = { "<cmd>NvimTreeFindFileToggle<cr>", "Find file toggle" },
         },
 
         z = {
@@ -83,5 +83,5 @@ local leader_mappings = {
     }
 }
 
-whichkey.register(leader_mappings, opts)
-whichkey.register(ctrl_mappings, opts)
+whichkey.register(default_mappings, default_opts)
+whichkey.register(git_mappings, {prefix = "<leader>", default_opts})
