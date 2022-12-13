@@ -50,6 +50,9 @@ local default_mappings = {
         b = {
             name = "Buffer",
             D = { "<Cmd>%bd|e#|bd#<Cr>", "Delete all buffers" },
+            p = { "<cmd>BufferLinePick<cr>", "Buffer line pick" },
+            l = { "<cmd>BufferLineCloseLeft<cr>", "Buffer line close left" },
+            r = { "<cmd>BufferLineCloseRight<cr>", "Buffer line close right" },
         },
 
         c = { "<cmd>Bdelete!<cr>", "Buffer delete" },

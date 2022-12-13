@@ -1,9 +1,16 @@
 M = {}
 
+local navic =require("nvim-navic")
+
 function M.custom_lsp_attach(client, bufnr)
     -- disable formatting for LSP clients as this is handled by null-ls
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
+    -- client.server_capabilities.documentFormattingProvider = false
+    -- client.server_capabilities.documentRangeFormattingProvider = false
+
+    if client.server_capabilities.documentSymbolProvider then
+        navic.attach(client, bufnr)
+    end
+
 
     local wk = require("which-key")
     local default_options = { silent = true }
@@ -15,7 +22,7 @@ function M.custom_lsp_attach(client, bufnr)
             R = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
             r = { "<cmd>lua vim.lsp.buf.references()<cr>", "References" },
             a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-            f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
+            f = { "<cmd>lua vim.lsp.buf.format { async = true }<cr>", "Format" },
             i = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Show implementations" },
             k = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Hover Commands" },
             l = { "<cmd>lua vim.diagnostic.open_float()<cr>", "Line Diagnostics" },

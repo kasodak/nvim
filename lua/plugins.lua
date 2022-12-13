@@ -54,6 +54,8 @@ packer.startup(function(use)
             vim.cmd "colorscheme everforest"
         end,
     }
+    -- Nord theme
+    use { 'arcticicestudio/nord-vim' }
     -- Registers popup menu
     use {
         'tversteeg/registers.nvim',
@@ -93,15 +95,7 @@ packer.startup(function(use)
     use {
         'nvim-lualine/lualine.nvim',
         config = function()
-            require('lualine').setup {
-                options = {
-                    component_separators = { left = '', right = ''},
-                    section_separators = { left = '', right = ''},
-                    disabled_filetypes = {
-                        "packer", "NvimTree", "alpha"
-                    }
-                }
-            }
+            require("config.lualine")
         end,
     }
 
@@ -220,6 +214,12 @@ packer.startup(function(use)
         module = "mason-tool-installer",
         requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
         config = get_config("lsp.mason"),
+    }
+
+    -- Context in the header :p
+    use {
+        "SmiteshP/nvim-navic",
+        requires = "neovim/nvim-lspconfig"
     }
 
      -- Completion
