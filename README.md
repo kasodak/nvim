@@ -1,3 +1,29 @@
+## Dependencies
+
+- npm
+- node
+- python3
+- pip3
+- wget
+- curl
+- gzip
+- tar
+- git
+
+### Providers
+
+- NodeJS provider: npm install -g neovim
+- Python3 provider: pip3 -g install pynvim
+
+### Other
+
+- [fd](https://github.com/sharkdp/fd) - better `find` utility
+- [rg](https://github.com/BurntSushi/ripgrep) - better `grep` utility
+- [bat](https://github.com/sharkdp/bat) - syntax highlighted previews when
+  using fzf's native previewer
+- [delta](https://github.com/dandavison/delta) - syntax highlighted git pager
+  for git status previews
+
 ## Plugins:
 
 (Important ones)
@@ -15,7 +41,6 @@
   - [Registers](https://github.com/tversteeg/registers.nvim) : Nice registers overview
 - Utils
   - [Whichkey](https://github.com/folke/which-key.nvim) : Keymap helper
-  - [Surround](https://github.com/kylechui/nvim-surround) : Surround words with what you want
   - [Comment](https://github.com/numToStr/Comment.nvim) : Comment stuff
   - [FZF](https://github.com/junegunn/fzf) : Rust fuzzy finder (FzfLua dependency)
   - [FzfLua](https://github.com/ibhagwan/fzf-lua) : Power tool to use FZF with Neovim and its plugins 

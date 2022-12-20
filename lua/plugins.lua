@@ -54,8 +54,9 @@ packer.startup(function(use)
             vim.cmd "colorscheme everforest"
         end,
     }
-    -- Nord theme
-    use { 'arcticicestudio/nord-vim' }
+    -- Cool themes
+    use { 'EdenEast/nightfox.nvim' }
+
     -- Registers popup menu
     use {
         'tversteeg/registers.nvim',
@@ -215,6 +216,8 @@ packer.startup(function(use)
         requires = { "williamboman/mason-lspconfig.nvim", "WhoIsSethDaniel/mason-tool-installer.nvim" },
         config = get_config("lsp.mason"),
     }
+
+    use { 'fatih/vim-go' }
 
     -- Context in the header :p
     use {
