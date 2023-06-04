@@ -30,17 +30,43 @@ whichkey.setup(conf)
 local git_mappings = {
     g = {
         name = "Git stuff",
-        s = { "<cmd>Gitsigns preview_hunk<cr>", "Preview hunk" },
-        d = { "<cmd>Gvdiffsplit master<cr>", "Verticall diff split of master" },
+        d = {
+            name = "Git vertical diff split",
+            m = { "<cmd>Gvdiffsplit master<cr>", "Master" },
+            h = { "<cmd>Gvdiffsplit HEAD~1<cr>", "HEAD ~ 1" },
+        },
         u = { "<cmd>Gitsigns reset_hunk<cr>", "Reset hunk" },
         b = { "<cmd>Gitsigns blame_line<cr>", "Blame line" },
         n = { "<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
-        p = { "<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
-        g = { "<cmd>0G<cr>", "Previous hunk" },
-    }
+        g = { "<cmd>0G<cr>", "Fugitive UI" },
+        c = {
+            c = { "<cmd>Git commit<cr>", "Normal" },
+            a = { "<cmd>Git commit --amend --no-edit<cr>", "Amend + no edit" },
+        },
+        a = { "<cmd>Git add %<cr>", "Git stage current file"},
+        p = {
+            p = { "<cmd>Git push<cr>", "Git push to origin" },
+            f = { "<cmd>Git push -f<cr>", "Git force push to origin" },
+        },
+
+        P = { "<cmd>Git pull<cr>", "Git pull" }
+
+    },
 }
 
 local default_mappings = {
+    ["<TAB>"] = { "<cmd>BufferLineCycleNext<cr>", "Bufferline cycle next" },
+    ["<S-TAB>"] = { "<cmd>BufferLineCyclePrev<cr>", "Bufferline cycle prev" },
+
+    ["["] = {
+        c = {"<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
+        t = {"<cmd>lua require(\"todo-comments\").jump_prev()<cr>zz", "Prev TODO" },
+    },
+    ["]"] = {
+        c = {"<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
+        t = {"<cmd>lua require(\"todo-comments\").jump_next()<cr>zz", "Next TODO" },
+    },
+
     ["<leader>"] = {
         e = {
             name = "Edit",
@@ -59,7 +85,8 @@ local default_mappings = {
 
         f = {
             name = "Find",
-            f = { "<cmd>FzfLua files<cr>", "Files" },
+            f = { "<cmd>FZF<cr>", "Files" },
+            F = { "<cmd>FzfLua files<cr>", "Files" },
             b = { "<cmd>FzfLua buffers<cr>", "Buffers" },
             o = { "<cmd>FzfLua oldfiles<cr>", "Old files" },
             G = { "<cmd>FzfLua live_grep<cr>", "Live grep" },

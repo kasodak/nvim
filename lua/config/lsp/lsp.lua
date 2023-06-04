@@ -19,8 +19,9 @@ local servers = {
     "dockerls",
     "jsonls",
     "yamlls",
-    "sumneko_lua",
+    "lua_ls",
     "terraformls",
+    "pylsp",
 }
 
 for _, lsp in ipairs(servers) do
@@ -32,7 +33,9 @@ for _, lsp in ipairs(servers) do
         flags = { debounce_text_changes = 150 },
         settings = {
             Lua = opts.lua,
-            -- yaml = opts.yaml,
+            yaml = opts.yamlls,
         },
     })
 end
+
+-- https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json

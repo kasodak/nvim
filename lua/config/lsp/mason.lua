@@ -2,7 +2,7 @@ local m_present, m = pcall(require, "mason")
 local mlsp_present, mlspc = pcall(require, "mason-lspconfig")
 local mtinst_present, mtinst = pcall(require, "mason-tool-installer")
 
-if not m_present and not mlsp_present then
+if not m_present and not mlsp_present and not mtinst_present then
 	return
 end
 
@@ -20,13 +20,13 @@ mtinst.setup {
         "lua-language-server",
         "terraform-ls",
         "yaml-language-server",
+        "python-lsp-server",
         "gopls",
         -- Formatter
         "stylua",
         -- Linter
         "shellcheck",
         "tflint",
-        "yamllint",
         -- DAP
         -- Nothing yet
     },

@@ -26,4 +26,13 @@ M.lua = {
     telemetry = { enable = false },
 }
 
+M.yamlls = {
+    hover = true,
+    completion = true,
+    validate = true,
+    schemas = {
+        ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] = "**/azure-pipelines-testing.yml"
+    }
+}
+
 return M

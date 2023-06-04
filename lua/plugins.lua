@@ -41,8 +41,12 @@ packer.startup(function(use)
     use("wbthomason/packer.nvim")
 
     -- Usual Lua dependency stuff
-    use('nvim-lua/popup.nvim')
-    use('nvim-lua/plenary.nvim')
+    use {
+        'nvim-lua/popup.nvim'
+    }
+    use {
+        'nvim-lua/plenary.nvim'
+    }
 
     -- Forest colors, tasty theme
     use {
@@ -55,7 +59,9 @@ packer.startup(function(use)
         end,
     }
     -- Cool themes
-    use { 'EdenEast/nightfox.nvim' }
+    use {
+        'EdenEast/nightfox.nvim'
+    }
 
     -- Registers popup menu
     use {
@@ -77,6 +83,20 @@ packer.startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons" },
         config = function()
             require("config.alpha")
+            require("nvim-web-devicons").set_icon {
+                ps1 = {
+                    icon = "",
+                    color = "#5c8cf2",
+                    cterm_color = "65",
+                    name = "Powershell"
+                },
+                psm1 = {
+                    icon = "",
+                    color = "#5c8cf2",
+                    cterm_color = "65",
+                    name = "Powershell"
+              }
+            }
         end,
     }
 
@@ -98,6 +118,22 @@ packer.startup(function(use)
         config = function()
             require("config.lualine")
         end,
+    }
+
+    -- shading inactive windows
+    use {
+        'sunjon/shade.nvim',
+        config = function ()
+            require'shade'.setup({
+                overlay_opacity = 50,
+                opacity_step = 1,
+                keys = {
+                    brightness_up    = '<C-Up>',
+                    brightness_down  = '<C-Down>',
+                    toggle           = '<Leader>s',
+                }
+            })
+        end
     }
 
     -- Bufferline and better tab view
@@ -153,6 +189,47 @@ packer.startup(function(use)
         end,
     }
 
+    -- Bookmarks for lines
+    use {
+        "MattesGroeger/vim-bookmarks",
+    }
+
+    -- Todo highlights
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+    use {
+        "MunifTanjim/nui.nvim",
+        config = function ()
+            require('nui')
+        end
+    }
+
+    -- lazy.nvim
+    use {
+        "folke/noice.nvim",
+        opts = {
+            -- add any options here
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- "nvim-notify" -- ` is only needed, if you want to use the notification view.
+        },
+        config = function ()
+            require('config.noice')
+
+        end
+    }
+
     -- Auto pairs
     use {
         'windwp/nvim-autopairs',
@@ -164,6 +241,10 @@ packer.startup(function(use)
     -- Better buffer delete
     use { "famiu/bufdelete.nvim" }
 
+    -- Aligning everything
+    use {
+        "junegunn/vim-easy-align",
+    }
 
     -- More targets to operate on
     use('wellle/targets.vim')
@@ -183,11 +264,25 @@ packer.startup(function(use)
 
     -- File tree
     use {
+        'nvim-tree/nvim-web-devicons',
+        config = function ()
+            require('nvim-web-devicons').setup()
+        end
+    }
+    use {
         'kyazdani42/nvim-tree.lua',
         config = function ()
-            require('nvim-tree').setup {
-
-            }
+            require('nvim-tree').setup({
+                view = {
+                    number = true,
+                    width = {}
+                },
+                renderer = {
+                    indent_markers = {
+                        enable = true
+                    }
+                }
+            })
         end
     }
 
@@ -225,7 +320,7 @@ packer.startup(function(use)
         requires = "neovim/nvim-lspconfig"
     }
 
-     -- Completion
+    -- Completion
     use {
         "hrsh7th/nvim-cmp",
         config = function()
