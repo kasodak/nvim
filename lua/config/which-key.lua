@@ -31,10 +31,12 @@ local git_mappings = {
     g = {
         name = "Git stuff",
         d = {
-            name = "Git vertical diff split",
+            name = "Git diff",
             m = { "<cmd>Gvdiffsplit master<cr>", "Master" },
             h = { "<cmd>Gvdiffsplit HEAD~1<cr>", "HEAD ~ 1" },
+            d = { "<cmd>Gitsigns preview_hunk_inline<cr>", "Preview hunk inline" },
         },
+        S = { "<cmd>Gitsigns stage_hunk<cr>", "Stage hunk" },
         u = { "<cmd>Gitsigns reset_hunk<cr>", "Reset hunk" },
         b = { "<cmd>Gitsigns blame_line<cr>", "Blame line" },
         n = { "<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
@@ -44,6 +46,7 @@ local git_mappings = {
             a = { "<cmd>Git commit --amend --no-edit<cr>", "Amend + no edit" },
         },
         a = { "<cmd>Git add %<cr>", "Git stage current file"},
+        A = { "<cmd>Git add -A<cr>", "Git stage all"},
         p = {
             p = { "<cmd>Git push<cr>", "Git push to origin" },
             f = { "<cmd>Git push -f<cr>", "Git force push to origin" },
@@ -58,14 +61,14 @@ local default_mappings = {
     ["<TAB>"] = { "<cmd>BufferLineCycleNext<cr>", "Bufferline cycle next" },
     ["<S-TAB>"] = { "<cmd>BufferLineCyclePrev<cr>", "Bufferline cycle prev" },
 
-    ["["] = {
-        c = {"<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
-        t = {"<cmd>lua require(\"todo-comments\").jump_prev()<cr>zz", "Prev TODO" },
-    },
-    ["]"] = {
-        c = {"<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
-        t = {"<cmd>lua require(\"todo-comments\").jump_next()<cr>zz", "Next TODO" },
-    },
+    -- ["["] = {
+    --     c = {"<cmd>Gitsigns prev_hunk<cr>", "Previous hunk" },
+    --     t = {"<cmd>lua require(\"todo-comments\").jump_prev()<cr>zz", "Prev TODO" },
+    -- },
+    -- ["]"] = {
+    --     c = {"<cmd>Gitsigns next_hunk<cr>", "Next hunk" },
+    --     t = {"<cmd>lua require(\"todo-comments\").jump_next()<cr>zz", "Next TODO" },
+    -- },
 
     ["<leader>"] = {
         e = {
@@ -109,7 +112,10 @@ local default_mappings = {
             name = "Session",
             s = { "<cmd>lua require('utils.session').save()<cr>", "Save" },
             l = { "<cmd>lua require('utils.session').list()<cr>", "List" },
-        }
+        },
+
+        t = { "<cmd>lua require('utils.git-ascii').sth()<cr>", "List" },
+
     }
 }
 

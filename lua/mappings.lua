@@ -1,5 +1,9 @@
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
+local f1='<C-v><F1>'
+local f2='<C-v><F2>'
+local f3='<C-v><F3>'
+local f4='<C-v><F4>'
 
 -- Setting <leader> to <space>
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
@@ -39,6 +43,6 @@ keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "N", "Nzz", opts)
 keymap("n", "n", "nzz", opts)
 
----
 -- EasyAlign
-
+keymap("n","ga", "<Plug>(EasyAlign)", opts)
+keymap("x","ga", "<Plug>(EasyAlign)", opts)

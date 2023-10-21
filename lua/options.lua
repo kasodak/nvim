@@ -11,7 +11,7 @@ o.expandtab      = true -- Tabs to spaces
 
 o.dir            = fn.stdpath("data") .. "/swp" -- swap file directory
 o.signcolumn     = "auto:4"
--- o.lazyredraw     = true -- Do not redraw screen while running macros
+-- o.lazyredraw     = true -- Do not redraw screen while running macros / interferes with noice.nvim
 o.completeopt    = { "menu", "menuone", "noselect", "noinsert" } -- A comma separated list of options for Insert mode completion
 o.fileencoding   = "utf-8" -- the encoding written to a file
 o.updatetime     = 300 -- faster completion
