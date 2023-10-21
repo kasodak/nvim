@@ -10,7 +10,8 @@ require("lualine").setup({
     },
     sections = {
         lualine_c = {
-            { 'filename',navic.get_location, cond = navic.is_available },
+            { 'filename', color = {bg='green', fg='white'}},
+            { navic.get_location, cond = navic.is_available },
         }
     }
 })

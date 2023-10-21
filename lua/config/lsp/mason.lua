@@ -20,7 +20,7 @@ mtinst.setup {
         "lua-language-server",
         "terraform-ls",
         "yaml-language-server",
-        "python-lsp-server",
+        -- "python-lsp-server",
         "gopls",
         -- Formatter
         "stylua",

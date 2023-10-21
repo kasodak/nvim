@@ -4,9 +4,6 @@ local api = vim.api
 local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 local packer_bootstrap = false
 
-local function get_config(name)
-    return string.format('require("config/%s")', name)
-end
 
 -- Install Packer if it is not installed yet
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -21,7 +18,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
     api.nvim_command("packadd packer.nvim")
 else
     -- Run PackerCompile if there are changes in this file
-    vim.cmd "autocmd BufWritePost plugins.lua source <afile> | PackerCompile"
+--    vim.cmd "autocmd BufWritePost plugins.lua source <afile> | PackerCompile"
 end
 
 -- Packer init with settings
@@ -36,17 +33,26 @@ packer.init {
     }
 }
 
--- Installing plugins
-packer.startup(function(use)
-    use("wbthomason/packer.nvim")
 
-    -- Usual Lua dependency stuff
-    use {
-        'nvim-lua/popup.nvim'
-    }
-    use {
-        'nvim-lua/plenary.nvim'
-    }
+-- Little local helper function to load configs from config folder
+local function get_config(name)
+    return string.format('require("config/%s")', name)
+end
+
+-- Plugins in function by "category"
+local function appearence(use)
+
+    -- 󰴈 
+    -- 󰹢 
+    use 'rcarriga/nvim-notify'
+
+    use "rebelot/kanagawa.nvim"
+    -- use {
+    --     "MunifTanjim/nui.nvim",
+    --     config = function ()
+    --         require('nui')
+    --     end
+    -- }
 
     -- Forest colors, tasty theme
     use {
@@ -70,10 +76,36 @@ packer.startup(function(use)
             require('registers').setup()
         end,
     }
-    use {
-        "Pocco81/true-zen.nvim",
+
+    -- Indent blankline (neat to have tree-sitter with it)
+    use{
+        'lukas-reineke/indent-blankline.nvim',
         config = function()
-            require("true-zen").setup()
+            require('ibl').setup({
+            })
+        end,
+    }
+
+    -- Bufferline and better tab view
+    use {
+        'akinsho/bufferline.nvim',
+        config = function()
+            require("bufferline").setup {
+                options = {
+                    numbers = "none",
+                    diagnostics = "nvim_lsp",
+                    separator_style = "thick", show_tab_indicators = true,
+                    show_buffer_close_icons = false,
+                    show_close_icon = false,
+                },
+            }
+        end,
+    }
+    -- Lua based status line
+    use {
+        'nvim-lualine/lualine.nvim',
+        config = function()
+            require("config.lualine")
         end,
     }
 
@@ -100,57 +132,53 @@ packer.startup(function(use)
         end,
     }
 
-    -- Indent blankline (neat to have tree-sitter with it)
-    use{
-        'lukas-reineke/indent-blankline.nvim',
-        config = function()
-            require('indent_blankline').setup({
-                space_char_blankline = " ",
-                show_current_context = true,
-
-            })
-        end,
-    }
-
-    -- Lua based status line
     use {
-        'nvim-lualine/lualine.nvim',
-        config = function()
-            require("config.lualine")
-        end,
-    }
-
-    -- shading inactive windows
-    use {
-        'sunjon/shade.nvim',
+        'nvim-tree/nvim-web-devicons',
         config = function ()
-            require'shade'.setup({
-                overlay_opacity = 50,
-                opacity_step = 1,
-                keys = {
-                    brightness_up    = '<C-Up>',
-                    brightness_down  = '<C-Down>',
-                    toggle           = '<Leader>s',
+            require('nvim-web-devicons').setup()
+        end
+    }
+
+end
+
+local function helpers(use)
+
+    -- File tree
+    use {
+        'kyazdani42/nvim-tree.lua',
+        config = function ()
+            require('nvim-tree').setup({
+                view = {
+                    number = true,
+                    width = {},
+                    -- float = {
+                    --     enable = true
+                    -- }
+                },
+                renderer = {
+                    indent_markers = {
+                        enable = true
+                    },
+                    icons = {
+                        glyphs = {
+                            folder = {
+                                arrow_closed = "",
+                                arrow_open = "",
+                                -- default = "",
+                                -- open = "",
+                                empty = "󱏽 ",
+                                empty_open = "󰹣 ",
+                                symlink = "",
+                                default = "󰹢 ",
+                                open = " "
+                            }
+                        }
+                    }
                 }
             })
         end
     }
 
-    -- Bufferline and better tab view
-    use {
-        'akinsho/bufferline.nvim',
-        config = function()
-            require("bufferline").setup {
-                options = {
-                    numbers = "none",
-                    diagnostics = "nvim_lsp",
-                    separator_style = "thick", show_tab_indicators = true,
-                    show_buffer_close_icons = false,
-                    show_close_icon = false,
-                },
-            }
-        end,
-    }
     use {
         "tiagovla/scope.nvim",
         config = function()
@@ -158,40 +186,21 @@ packer.startup(function(use)
         end
     }
 
-    -- Treesitter: syntax, auto-indent and more!
-    use {
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        config = function()
-            require("config.tree-sitter")
-        end,
-    }
-    use { "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" }
-    -- use { "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter"}
-    use { "andymass/vim-matchup", after = "nvim-treesitter"}
+    -- Cool Git plugins
+    use('tpope/vim-fugitive')
 
     use {
-        'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim',
-        config = function()
-            require('toggle_lsp_diagnostics').init()
-        end,
+        'lewis6991/gitsigns.nvim',
+        config = get_config('git'),
     }
 
-    -- FZF
-    use { "junegunn/fzf", run = "./install --bin", event = "VimEnter" }
-
-    -- Lua FZF
+    -- Which Key for mappings
     use {
-        "ibhagwan/fzf-lua",
-        event = "BufEnter",
+        'folke/which-key.nvim',
+        event = "VimEnter",
         config = function()
-            require('config.fzf-lua')
+            require('config.which-key')
         end,
-    }
-
-    -- Bookmarks for lines
-    use {
-        "MattesGroeger/vim-bookmarks",
     }
 
     -- Todo highlights
@@ -200,34 +209,29 @@ packer.startup(function(use)
         requires = "nvim-lua/plenary.nvim",
         config = function()
             require("todo-comments").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
+                -- keywords = {
+                --     QUESTION = { icon = "", color = "question",}
+                -- },
+                -- colors = {
+                --     question = {"DiagnosticQuestion", "7EED9B" }
+                -- },
             }
         end
     }
+
+    -- LSP diagnostics better toggling
     use {
-        "MunifTanjim/nui.nvim",
-        config = function ()
-            require('nui')
-        end
+        'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim',
+        config = function()
+            require('toggle_lsp_diagnostics').init()
+        end,
     }
 
-    -- lazy.nvim
-    use {
-        "folke/noice.nvim",
-        opts = {
-            -- add any options here
-        },
-        dependencies = {
-            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-            "MunifTanjim/nui.nvim",
-            -- "nvim-notify" -- ` is only needed, if you want to use the notification view.
-        },
-        config = function ()
-            require('config.noice')
 
-        end
+    -- Vim visual multi cursor
+    use {
+        'mg979/vim-visual-multi',
+        enable = false
     }
 
     -- Auto pairs
@@ -259,51 +263,45 @@ packer.startup(function(use)
             require('Comment').setup()
         end,
     }
-    -- And neat comment boxes or lines
-    use("LudoPinelli/comment-box.nvim")
 
-    -- File tree
-    use {
-        'nvim-tree/nvim-web-devicons',
-        config = function ()
-            require('nvim-web-devicons').setup()
-        end
-    }
-    use {
-        'kyazdani42/nvim-tree.lua',
-        config = function ()
-            require('nvim-tree').setup({
-                view = {
-                    number = true,
-                    width = {}
-                },
-                renderer = {
-                    indent_markers = {
-                        enable = true
-                    }
-                }
-            })
-        end
-    }
+end
 
-    -- Cool Git plugins
-    use('tpope/vim-fugitive')
+local function navigation(use)
+    -- FZF
+    use { "junegunn/fzf", run = "./install --bin", event = "VimEnter" }
+    -- Lua FZF
     use {
-        'lewis6991/gitsigns.nvim',
-        config = get_config('git'),
-    }
-
-    -- Which Key for mappings
-    use {
-        'folke/which-key.nvim',
-        event = "VimEnter",
+        "ibhagwan/fzf-lua",
+        event = "BufEnter",
         config = function()
-            require('config.which-key')
+            require('config.fzf-lua')
         end,
     }
 
+end
+
+local function syntax(use)
+    use { 'pprovost/vim-ps1' }
+
+    -- Treesitter: syntax, auto-indent and more!
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        config = function()
+            require("config.tree-sitter")
+        end,
+    }
+    use { "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" }
+    -- use { "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter"}
+    use { "andymass/vim-matchup", after = "nvim-treesitter"}
+
+end
+
+local function lsp(use)
+
     -- LSP --
     use { "neovim/nvim-lspconfig", config = get_config("lsp.lsp") }
+
     use {
         "williamboman/mason.nvim",
         cmd = "Mason*",
@@ -346,6 +344,23 @@ packer.startup(function(use)
             "rafamadriz/friendly-snippets",
         },
     }
+    
+end
+
+-- Installing plugins
+packer.startup(function(use)
+
+    use("wbthomason/packer.nvim")
+
+    -- Usual Lua dependency stuff
+    use { 'nvim-lua/popup.nvim' }
+    use { 'nvim-lua/plenary.nvim' }
+
+    appearence(use)
+    helpers(use)
+    navigation(use)
+    syntax(use)
+    lsp(use)
 
 
     if packer_bootstrap then
